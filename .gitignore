@@ -1,3 +1,4 @@
+# --- Existing Entries ---
 *.log
 .DS_Store
 .env
@@ -22,3 +23,21 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# --- Missing Essentials for Laravel/Pest ---
+.phpunit.result.cache
+.pest_tracker.php
+/storage/debugbar/
+
+# --- Database (Crucial since we are using SQLite) ---
+/database/*.sqlite
+/database/*.sqlite-journal
+
+# --- Testing Artifacts ---
+/tests/__snapshots__
+.phpunit.cache/
+.pest_cache/
+
+# --- System/OS specific ---
+.Spotlight-V100
+.Trashes
