@@ -1,104 +1,312 @@
-# Senior PHP Backend Developer – Coding Assessment
+# 📝 Collaborative Task Management API
 
-Thank you for taking the time to complete this assessment.  
-The goal is to demonstrate how you approach architecture, testing, and backend engineering best practices.
+A robust, scalable REST API built with **Laravel 11**, designed using clean architecture principles, SOLID design patterns, and optimized for high performance.
 
----
-
-## 📖 Project: Collaborative Task Management API
-
-### Objective
-Build a REST API for managing projects, tasks, comments, and notifications.  
-We value **clean architecture, thoughtful design, and code quality** over speed or feature quantity.
+This project was developed as part of a **Senior Backend Developer assessment**, focusing on maintainability, scalability, and real-world engineering practices.
 
 ---
 
-## ✅ Requirements
+# 🚀 Features
 
-### Core Features
-- **Authentication**: User registration & login (JWT or Laravel Sanctum).
-- **Projects**: CRUD operations. Each project belongs to a user.
-- **Tasks**:
-  - CRUD operations.
-  - Fields: `title, description, status (todo/in-progress/done), due_date`.
-  - Filtering: by status, due date, full-text search.
-  - Pagination for listing.
-- **Comments**: CRUD operations. Each comment belongs to a task.
-- **Notifications**:
-  - Triggered when a task is assigned or updated.
-  - Delivered asynchronously (e.g., queue).
-  - Endpoint for fetching unseen notifications.
-
-### Non-Functional
-- Use a layered architecture (controllers, services, repositories, domain models).
-- Apply at least two meaningful design patterns (e.g., Repository, Strategy, Observer).
-- Database migrations must be included.
-- Cache task listings (e.g., Redis).
-- Add rate limiting for sensitive endpoints.
-- Standardized error handling and responses.
-
-### Testing
-- Unit tests for core services and repositories.
-- Integration tests for API endpoints.
-- Minimum **70% test coverage**.
-
-### DevOps
-- `Dockerfile` + `docker-compose.yml` for local setup.
-- CI pipeline runs automatically (tests, static analysis, linting, security).
-- Compatible with **PHP 8.2+**.
-
-### Documentation
-- Update this `README.md` to include:
-  - Setup instructions.
-  - Example API requests (curl/Postman).
-  - Explanation of your architectural decisions and trade-offs.
-  - Which design patterns you applied, and why.
+* Authentication with Laravel Sanctum
+* Project & Task management
+* Nested comments system
+* Asynchronous notifications (Observers + Queues)
+* Redis caching strategy
+* Rate limiting for critical endpoints
+* Fully Dockerized environment
+* Clean Architecture (Layered)
 
 ---
 
-## 🎯 Acceptance Criteria
+# 🧱 Architecture Overview
 
-Your submission will be evaluated on:
+This project follows a **layered architecture** to ensure separation of concerns and testability.
 
-- **Architecture & Patterns**: Separation of concerns, justified design patterns.
-- **Code Quality & Standards**: PSR-12 compliance, maintainability.
-- **Feature Completeness**: Requirements implemented.
-- **Testing**: Coverage, meaningful cases, edge-case handling.
-- **Documentation**: Clear and professional.
-- **DevOps**: CI/CD awareness, Docker setup.
+### Layers
+
+#### 1. Controllers
+
+* Handle HTTP requests & responses
+* No business logic
+* Delegate to Services
+
+#### 2. Services
+
+* Core business logic layer
+* Coordinates repositories
+* Handles caching, transactions, and orchestration
+
+#### 3. Repositories
+
+* Abstract data access layer
+* Uses interfaces (Dependency Inversion)
+* Easily swappable (e.g., DB → ElasticSearch)
+
+#### 4. DTOs (Data Transfer Objects)
+
+* Immutable data carriers
+* Prevent leaking request structures into business logic
 
 ---
 
-## 📝 Commit Guidelines
+# 🧠 Design Patterns Used
 
-We value not only the final code but also how you structure your work.  
-Please use **meaningful, structured commit messages** throughout your development.  
+### ✅ Repository Pattern
 
-- Follow [Conventional Commits](https://www.conventionalcommits.org/) style when possible:  
-  - `feat:` – for new features  
-  - `fix:` – for bug fixes  
-  - `chore:` – for setup, configuration, or maintenance  
-  - `test:` – for adding or improving tests  
-  - `docs:` – for documentation changes  
+Decouples database logic from business logic.
 
-- Examples:  
-  - `chore: initial commit (Laravel project setup)`  
-  - `feat: add task CRUD endpoints`  
-  - `fix: correct due date validation logic`  
+👉 Why:
+Allows switching data sources without changing Services.
 
-Your commit history will be reviewed as part of the assessment to understand how you approach iteration, problem-solving, and communication through code.
+---
 
+### ✅ Observer Pattern
 
-## 📦 Submission Instructions
-1. Implement your solution inside this repo.
-2. Push to a private GitHub repository.
-3. Invite the following reviewers with **Read**  role: `gh-ewmateam`.
-4. Please complete within 7 days of receiving the assignment.
-5. If you need more time, let us know.
+Used for:
 
-## ℹ️ Notes
-1. The project is designed to take 3–5 hours. We do not expect a production-ready system.
-2. Quality matters more than quantity — partial solutions are acceptable if well-documented.
-3. Document anything you would do differently with more time.
+* Notifications
+* Cache invalidation
 
-Good luck, and thank you again for your effort!
+👉 Why:
+Keeps side effects out of business logic.
+
+---
+
+### ✅ Dependency Inversion (SOLID)
+
+Services depend on interfaces, not implementations.
+
+👉 Why:
+Improves testability and flexibility.
+
+---
+
+### ✅ Service Container (IoC)
+
+Laravel container is used for binding interfaces to implementations.
+
+---
+
+### ✅ Rate Limiting Strategy
+
+Critical endpoints (update/delete) are throttled.
+
+👉 Why:
+Prevents abuse and improves system stability under load.
+
+---
+
+# ⚖️ Trade-offs & Decisions
+
+### ❗ Why NOT Fat Controllers / Models
+
+* Hard to maintain
+* Hard to test
+* Tight coupling
+
+---
+
+### ❗ Why Repositories (even with Eloquent)
+
+Trade-off:
+
+* Adds complexity ❌
+* Improves scalability & testability ✅
+
+---
+
+### ❗ DTOs vs Request Arrays
+
+Trade-off:
+
+* More boilerplate ❌
+* Strong typing & safety ✅
+
+---
+
+### ❗ Nested Resources (Tasks → Comments)
+
+Trade-off:
+
+* Slight routing complexity ❌
+* Better domain modeling ✅
+
+---
+
+# 🛠️ Tech Stack
+
+* PHP 8.2+
+* Laravel 11
+* MySQL 8
+* Redis (Cache, Queue, Sessions)
+* Docker & Docker Compose
+* Pest PHP (Testing)
+
+---
+
+# ⚙️ Setup Instructions
+
+## 1. Clone repository
+
+```bash
+git clone git@github.com:ggorr13/task-api-template.git
+cd task-api-template
+```
+
+---
+
+## 2. Environment setup
+
+```bash
+cp .env.example .env
+```
+
+---
+
+## 3. Run containers
+
+```bash
+docker-compose up -d --build
+```
+
+---
+
+## 4. Install dependencies
+
+```bash
+docker-compose exec app composer install
+```
+
+---
+
+## 5. Generate app key
+
+```bash
+docker-compose exec app php artisan key:generate
+```
+
+---
+
+## 6. Run migrations & seeders
+
+```bash
+docker-compose exec app php artisan migrate --seed
+```
+
+---
+
+## 7. Run tests
+
+```bash
+docker-compose exec app php artisan test
+```
+
+---
+
+# 🔐 Authentication
+
+Uses **Laravel Sanctum**
+
+### Register
+
+```bash
+curl -X POST http://localhost/api/auth/register \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "Gor",
+  "email": "gor@example.com",
+  "password": "password",
+  "password_confirmation": "password"
+}'
+```
+
+---
+
+### Login
+
+```bash
+curl -X POST http://localhost/api/auth/login \
+-H "Content-Type: application/json" \
+-d '{
+  "email": "gor@example.com",
+  "password": "password"
+}'
+```
+
+---
+
+# 📡 API Examples
+
+## Create Project
+
+```bash
+curl -X POST http://localhost/api/projects \
+-H "Authorization: Bearer {token}" \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "New Project"
+}'
+```
+
+---
+
+## Create Task
+
+```bash
+curl -X POST http://localhost/api/tasks \
+-H "Authorization: Bearer {token}" \
+-H "Content-Type: application/json" \
+-d '{
+  "title": "New Task",
+  "project_id": 1
+}'
+```
+
+---
+
+## Add Comment
+
+```bash
+curl -X POST http://localhost/api/tasks/1/comments \
+-H "Authorization: Bearer {token}" \
+-H "Content-Type: application/json" \
+-d '{
+  "content": "This is a comment"
+}'
+```
+
+---
+
+## Get Unseen Notifications
+
+```bash
+curl -X GET http://localhost/api/notifications/unseen \
+-H "Authorization: Bearer {token}"
+```
+
+---
+
+# 🧪 Testing
+
+```bash
+docker-compose exec app php artisan test
+```
+
+Uses **Pest PHP** for modern, expressive testing.
+
+---
+
+# 📦 Future Improvements
+
+* API Versioning (`/api/v1`)
+* Swagger / OpenAPI documentation
+* WebSockets for real-time notifications
+* Advanced caching strategies (tag-based cache)
+
+---
+
+# 👨‍💻 Author
+
+**Gor Tamazyan**
+Senior PHP / Laravel Developer

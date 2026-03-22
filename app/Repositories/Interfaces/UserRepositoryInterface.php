@@ -2,10 +2,10 @@
 
 namespace App\Repositories\Interfaces;
 
-use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 
 interface UserRepositoryInterface
 {
-    public function findByEmail(string $email): ?User;
-    public function create(array $data): User;
+    public function findByEmail(string $email): ?Model;
+    public function create(array $data): Model;
 }
