@@ -2,8 +2,6 @@
 
 namespace App\DTOs\Project;
 
-use Illuminate\Http\Request;
-
 readonly class ProjectDTO
 {
     public function __construct(

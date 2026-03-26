@@ -2,8 +2,6 @@
 
 namespace App\DTOs\Task;
 
-use Illuminate\Http\Request;
-
 readonly class CommentDTO
 {
     public function __construct(
