@@ -2,27 +2,38 @@
 
 namespace App\DTOs\Task;
 
+use Illuminate\Http\Request;
+
 readonly class CommentDTO
 {
     public function __construct(
-        public readonly string $body,
-        public readonly int $task_id,
-        public readonly int $user_id
+        public string $body,
+        public int $task_id,
+        public int $user_id,
     ) {}
 
-    public static function fromRequest(array $data, int $taskId): self
+    public static function fromRequest(array $validatedData, int $taskId): self
+    {
+        return new self(
+            body: $validatedData['body'],
+            task_id: $taskId,
+            user_id: (int) auth()->id()
+        );
+    }
+
+    public static function fromArray(array $data): self
     {
         return new self(
             body: $data['body'],
-            task_id: $taskId,
-            user_id: (int) auth()->id()
+            task_id: $data['task_id'],
+            user_id: $data['user_id'],
         );
     }
 
     public function toArray(): array
     {
         return [
-            'body'    => $this->body,
+            'body' => $this->body,
             'task_id' => $this->task_id,
             'user_id' => $this->user_id,
         ];

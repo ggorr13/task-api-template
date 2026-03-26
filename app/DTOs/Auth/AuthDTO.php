@@ -2,6 +2,8 @@
 
 namespace App\DTOs\Auth;
 
+use Illuminate\Foundation\Http\FormRequest;
+
 readonly class AuthDTO
 {
     public function __construct(
@@ -9,11 +11,16 @@ readonly class AuthDTO
         public string $password,
     ) {}
 
-    public static function fromRequest($request): self
+    public static function fromArray(array $data): self
     {
         return new self(
-            email: $request->validated('email'),
-            password: $request->validated('password'),
+            email: $data['email'],
+            password: $data['password'],
         );
+    }
+
+    public static function fromRequest(FormRequest $request): self
+    {
+        return self::fromArray($request->validated());
     }
 }
